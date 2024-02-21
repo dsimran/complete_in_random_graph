@@ -1,0 +1,25 @@
+import networkx
+import networkx as nx
+import random
+import matplotlib.pyplot as plt
+
+n = random.randint(1, 500)
+p = random.uniform(0, 1)
+n_c = random.randint(1, 100)
+p_random = random.uniform(0, 1)
+G_r = nx.erdos_renyi_graph(n, p, seed=None, directed=False)
+G_c = nx.complete_graph(n_c)
+pos_r = networkx.circular_layout(G_r)
+pos_c = networkx.circular_layout(G_c)
+
+# embeds complete graph into a random graph
+def connect_random_complete_graph(n, p_random):
+    for i in range(n_c, n_c + n):
+        for j in range(i + 1, n_c + n):
+            if random.randint(0, 1) < p_random:
+                G_r.add_edge(i, j)
+    return G_r
+graph_random_complete = connect_random_complete_graph(n, p_random)
+nx.draw(graph_random_complete, with_labels=True)
+plt.show()
+nx.write_gexf(graph_random_complete, "embedding_complete_in_random_graph.gexf")

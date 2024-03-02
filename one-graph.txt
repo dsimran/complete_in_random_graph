@@ -1,0 +1,60 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+import math
+import random
+
+n = 30
+k = 10
+p = 0.1
+
+G = nx.Graph()
+color_map = []
+
+# set the coords of the k clique nodes
+for i in range(0, k):
+    print(i)
+    theta = (2 * i * math.pi) / k
+    a = 5
+    b = 0
+    r = 1
+    xi = a + r * math.cos(theta)
+    yi = b + r * math.sin(theta)
+    G.add_node(i, pos=(xi, yi))
+
+
+# set the coords of the random nodes
+for i in range(k, k + n):
+    print(i)
+    theta = (2 * i * math.pi) / n
+    a = 0
+    b = 0
+    r = 2
+    xi = a + r * math.cos(theta)
+    yi = b + r * math.sin(theta)
+    G.add_node(i, pos=(xi, yi))
+
+# set edges in the complete graph
+for i in range(0, k):
+
+    for j in range(0, k):
+        G.add_edge(i, j)
+
+# set edges in the random graph
+for i in range(k, k + n):
+
+    for j in range(0, k + n):
+        if random.uniform(0, 1) < p:
+            G.add_edge(i, j)
+color_map = []
+for node in G:
+    if node < k:
+        color_map.append('red')
+    else:
+        color_map.append('blue')
+pos = nx.get_node_attributes(G, 'pos')
+nx.draw(G, pos,node_color=color_map, edge_color="grey",width=0.5,with_labels=True)
+plt.show()
+
+
+
+
